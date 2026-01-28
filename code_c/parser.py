@@ -81,10 +81,14 @@ def registre_vers_binaire(nom_reg, bit, scale_by_4=False):
     return format(val & mask, f'0{bit}b')
 
 def normalize_instruction(line):
-    line = line.replace('[', '').replace(']', '').strip()
+    line = line.lower().strip()
+    line = line.replace('[', '').replace(']', '')
 
-    if not any(line.startswith(b) for b in ["b", "bne", "beq", "bge", "blt", "ble", "bgt"]):
-        line = re.sub(r'^(mov|add|sub|lsl|lsr|asr|ldr|str|mul|and|orr|eor|rsb)s\s', r'\1 ', line)
+    is_branch = line.startswith('b') and not line.startswith('bic')
+
+    if not is_branch:
+        regex_op = r'^(mov|add|sub|lsl|lsr|asr|ldr|str|mul|and|orr|eor|rsb|adc|sbc|ror|tst|bic|mvn|cmp|cmn|neg)s\s'
+        line = re.sub(regex_op, r'\1 ', line)
 
     parts = line.split(maxsplit=1)
     name = parts[0]
@@ -100,6 +104,9 @@ def normalize_instruction(line):
     if name == 'rsb' and len(args) == 3 and args[2] == '#0':
         args = [args[1], args[0]]
 
+    if name == 'neg':
+        name = 'rsb'
+
     return name, args
 
 def reorder_args_for_machine(cle, args):
@@ -113,8 +120,16 @@ def reorder_args_for_machine(cle, args):
     elif cle in ["ADD_IMM_T1", "SUB_IMM_T1"]:
         return [args[2], args[1], args[0]]
     
-    elif cle in ["CMP_REG", "MUL", "LSL_REG", "LSR_REG", "ASR_REG", "ORR_REG", "EOR_REG", "AND_REG", "ADC_REG", "SBC_REG", "ROR_REG"]:
-        return [args[1], args[0]]
+    alu_2_ops = [
+        "CMP_REG", "MUL", "LSL_REG", "LSR_REG", "ASR_REG", 
+        "ORR_REG", "EOR_REG", "AND_REG", "ADC_REG", "SBC_REG", 
+        "ROR_REG", "BIC_REG", "MVN_REG", "TST_REG", "CMN_REG", 
+        "RSB_REG", "NEGS_REG"
+    ]
+    
+    if cle in alu_2_ops:
+        if len(args) >= 2:
+            return [args[1], args[0]]
         
     return args
 
@@ -126,18 +141,23 @@ def first_pass_scan(raw_content):
     lines = [l.strip() for l in raw_content.split('\n') if l.strip()]
     
     for line in lines:
-        if line.endswith(':'):
-            labels[line[:-1]] = pc
-            continue
-        
-        if line.startswith('.') or line.startswith('@'): 
+        line = line.lower()
+
+        if (line.startswith('.') or line.startswith('@')) and not ':' in line: 
             continue
 
         if line.startswith('push') or (line.startswith('add') and 'r7' in line and 'sp' in line):
             continue
 
-        instructions.append((pc, line))
-        pc += 1
+        while ':' in line:
+            label_part, rest = line.split(':', 1)
+            label_name = label_part.strip()
+            labels[label_name] = pc
+            line = rest.strip()
+        
+        if line:
+            instructions.append((pc, line))
+            pc += 1
             
     return labels, instructions
 
@@ -198,11 +218,12 @@ def encode_standard(name, args):
                     return binaire_hexa(curr_bin)
     return None
 
-def assemble(content):
+def assemble(content, file):
     # Etape 1 : Scan des labels
     labels, instructions = first_pass_scan(content)
     
     hex_codes = []
+    
     
     # Etape 2 : Génération du code
     for pc, line in instructions:
@@ -211,7 +232,7 @@ def assemble(content):
         result_hex = None
         
         # Cas A : C'est une instruction de saut
-        if name.startswith('b'):
+        if name.startswith('b') and name != 'bic':
             result_hex = encode_branch(name, args, pc, labels)
             
         # Cas B : C'est une instruction standard
@@ -221,7 +242,7 @@ def assemble(content):
         if result_hex:
             hex_codes.append(result_hex)
         else:
-            print(f"Erreur sur la ligne : {line}")
+            file.write(f"\nErreur sur la ligne : {line}")
 
     return hex_codes
 
@@ -243,35 +264,40 @@ def compare(file, str):
 def process_all_files(root="."):
     count_ok = 0
     count_total = 0
+    file = "parser_result.txt"
 
-    for dirpath, _, filenames in os.walk(root):
-        for filename in filenames:
-            if filename.endswith(".s"):
-                count_total += 1
+    with open(file, "w", encoding="utf-8") as log_file:
+        for dirpath, _, filenames in os.walk(root):
+            for filename in filenames:
+                if filename.endswith(".s"):
 
-                file_s_path = os.path.join(dirpath, filename)
-                file_bin_path = os.path.join(dirpath, filename.replace(".s", ".bin"))
-                print("---------------------------------")
-                print(f"Traitement : {file_s_path}")
+                    file_s_path = os.path.join(dirpath, filename)
+                    file_bin_path = os.path.join(dirpath, filename.replace(".s", ".bin"))
+                    
+                    try:
+                        if os.path.exists(file_bin_path):
+                            count_total += 1
 
-                try:
-                    with open(file_s_path, 'r') as f:
-                        content_asm = f.read()
+                            log_file.write("\n---------------------------------")
+                            log_file.write(f"\nTraitement : {file_s_path}")
 
-                    codes = assemble(content_asm)
-                    res = "v2.0 raw\n" + " ".join(codes)
+                            with open(file_s_path, 'r', encoding="utf-8") as f:
+                                content_asm = f.read()
 
-                    if os.path.exists(file_bin_path):
-                        if compare(file_bin_path, res):
-                            print(f"succes pour {os.path.basename(file_bin_path)}")
-                            count_ok += 1
+                            codes = assemble(content_asm, log_file)
+                            res = "v2.0 raw\n" + " ".join(codes)
+
+                            
+                            if compare(file_bin_path, res):
+                                log_file.write(f"\nsucces pour {os.path.basename(file_bin_path)}")
+                                count_ok += 1
+                            else:
+                                log_file.write(f"\nEchec pour {os.path.basename(file_bin_path)}")
                         else:
-                            print(f"Echec pour {os.path.basename(file_bin_path)}")
-                    else:
-                        print(f"pas de fichier bin pour {os.path.basename(file_bin_path)}")
-                except Exception as e:
-                    print("Error")
+                            log_file.write(f"\npas de fichier bin pour {os.path.basename(file_bin_path)}")
+                    except Exception as e:
+                        log_file.write("\nError")
 
-    print(f"\n--- Bilan : {count_ok}/{count_total} fichiers corrects ---")
+        log_file.write(f"\n\n--- Bilan : {count_ok}/{count_total} fichiers corrects ---")
 
 process_all_files(".")
