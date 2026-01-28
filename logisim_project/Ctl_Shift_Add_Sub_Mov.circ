@@ -169,9 +169,9 @@ end type_architecture;
       <circ-port dir="out" pin="2020,1280" x="270" y="40"/>
       <circ-port dir="out" pin="2020,520" x="270" y="180"/>
       <circ-port dir="out" pin="2020,590" x="270" y="80"/>
-      <circ-port dir="out" pin="2020,690" x="270" y="100"/>
-      <circ-port dir="out" pin="2020,890" x="270" y="60"/>
       <circ-port dir="out" pin="2020,990" x="270" y="140"/>
+      <circ-port dir="out" pin="2030,890" x="270" y="60"/>
+      <circ-port dir="out" pin="2100,690" x="270" y="100"/>
       <circ-port dir="out" pin="980,270" x="270" y="200"/>
       <circ-port dir="out" pin="980,360" x="270" y="120"/>
     </appear>
@@ -315,6 +315,14 @@ end type_architecture;
       <a name="out_width" val="32"/>
       <a name="type" val="zero"/>
     </comp>
+    <comp lib="0" loc="(1920,550)" name="Bit Extender">
+      <a name="in_width" val="1"/>
+      <a name="out_width" val="3"/>
+    </comp>
+    <comp lib="0" loc="(1990,780)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="ENABLE"/>
+    </comp>
     <comp lib="0" loc="(200,200)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="label" val="Instruction"/>
@@ -347,25 +355,29 @@ end type_architecture;
       <a name="type" val="output"/>
       <a name="width" val="5"/>
     </comp>
-    <comp lib="0" loc="(2020,690)" name="Pin">
-      <a name="appearance" val="classic"/>
-      <a name="facing" val="west"/>
-      <a name="label" val="Imm32"/>
-      <a name="type" val="output"/>
-      <a name="width" val="32"/>
-    </comp>
-    <comp lib="0" loc="(2020,890)" name="Pin">
-      <a name="appearance" val="classic"/>
-      <a name="facing" val="west"/>
-      <a name="label" val="Imm32_Enable"/>
-      <a name="type" val="output"/>
-    </comp>
     <comp lib="0" loc="(2020,990)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="Rm"/>
       <a name="type" val="output"/>
       <a name="width" val="3"/>
+    </comp>
+    <comp lib="0" loc="(2030,890)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="Imm32_Enable"/>
+      <a name="type" val="output"/>
+    </comp>
+    <comp lib="0" loc="(2060,780)" name="Bit Extender">
+      <a name="in_width" val="1"/>
+      <a name="out_width" val="32"/>
+    </comp>
+    <comp lib="0" loc="(2100,690)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="Imm32"/>
+      <a name="type" val="output"/>
+      <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(230,200)" name="Splitter">
       <a name="fanout" val="16"/>
@@ -462,7 +474,18 @@ end type_architecture;
     <comp lib="1" loc="(1930,990)" name="OR Gate">
       <a name="width" val="3"/>
     </comp>
+    <comp lib="1" loc="(1970,520)" name="AND Gate">
+      <a name="size" val="30"/>
+      <a name="width" val="3"/>
+    </comp>
     <comp lib="1" loc="(1980,690)" name="OR Gate">
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="1" loc="(1980,890)" name="AND Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="1" loc="(2080,690)" name="AND Gate">
+      <a name="size" val="30"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="2" loc="(1900,710)" name="Multiplexer">
@@ -489,7 +512,7 @@ end type_architecture;
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="only ADD and SUB use Rm"/>
     </comp>
-    <comp lib="8" loc="(2279,1286)" name="Text">
+    <comp lib="8" loc="(2275,1285)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="Enable carry for SUB since it is reversed in ALU"/>
     </comp>
@@ -497,19 +520,19 @@ end type_architecture;
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="ALU will use Imm32 instead of Rm"/>
     </comp>
-    <comp lib="8" loc="(442,74)" name="Text">
+    <comp lib="8" loc="(440,70)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="Pull output low on Enable = 0"/>
     </comp>
-    <comp lib="8" loc="(864,109)" name="Text">
+    <comp lib="8" loc="(860,105)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="Note 3: Imm32_Enable forces the use of the immediate for Rm register"/>
     </comp>
-    <comp lib="8" loc="(914,75)" name="Text">
+    <comp lib="8" loc="(910,75)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="Note: ALU uses Rn register for shifts. Use Rn instead of Rm for shifts (immediate) here too"/>
     </comp>
-    <comp lib="8" loc="(924,90)" name="Text">
+    <comp lib="8" loc="(920,90)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="Note 2: MOV uses RSB ALU opcode with Imm8 reversed so that it is copied to output register"/>
     </comp>
@@ -555,7 +578,7 @@ end type_architecture;
     <wire from="(1260,730)" to="(1290,730)"/>
     <wire from="(1270,1000)" to="(1300,1000)"/>
     <wire from="(1270,1130)" to="(1300,1130)"/>
-    <wire from="(1280,890)" to="(2020,890)"/>
+    <wire from="(1280,890)" to="(1890,890)"/>
     <wire from="(1300,530)" to="(1520,530)"/>
     <wire from="(1300,560)" to="(1470,560)"/>
     <wire from="(1300,590)" to="(2020,590)"/>
@@ -575,7 +598,7 @@ end type_architecture;
     <wire from="(1390,1090)" to="(1860,1090)"/>
     <wire from="(1390,1160)" to="(1540,1160)"/>
     <wire from="(1390,1190)" to="(1550,1190)"/>
-    <wire from="(1390,1220)" to="(1540,1220)"/>
+    <wire from="(1390,1220)" to="(1570,1220)"/>
     <wire from="(140,260)" to="(160,260)"/>
     <wire from="(1450,710)" to="(1740,710)"/>
     <wire from="(1470,560)" to="(1470,970)"/>
@@ -584,11 +607,8 @@ end type_architecture;
     <wire from="(1520,500)" to="(1740,500)"/>
     <wire from="(1530,510)" to="(1530,1030)"/>
     <wire from="(1530,510)" to="(1740,510)"/>
-    <wire from="(1540,1160)" to="(1540,1220)"/>
-    <wire from="(1540,520)" to="(1540,670)"/>
+    <wire from="(1540,520)" to="(1540,1160)"/>
     <wire from="(1540,520)" to="(1740,520)"/>
-    <wire from="(1540,670)" to="(1540,1160)"/>
-    <wire from="(1540,670)" to="(1860,670)"/>
     <wire from="(1550,1170)" to="(1550,1190)"/>
     <wire from="(1550,1170)" to="(1730,1170)"/>
     <wire from="(1550,530)" to="(1550,650)"/>
@@ -597,6 +617,8 @@ end type_architecture;
     <wire from="(1560,540)" to="(1560,770)"/>
     <wire from="(1560,540)" to="(1740,540)"/>
     <wire from="(1560,770)" to="(1560,1200)"/>
+    <wire from="(1570,670)" to="(1570,1220)"/>
+    <wire from="(1570,670)" to="(1860,670)"/>
     <wire from="(1680,1190)" to="(1730,1190)"/>
     <wire from="(1680,970)" to="(1680,1190)"/>
     <wire from="(1680,970)" to="(1880,970)"/>
@@ -604,7 +626,7 @@ end type_architecture;
     <wire from="(1690,1160)" to="(1730,1160)"/>
     <wire from="(1780,1180)" to="(2020,1180)"/>
     <wire from="(1780,710)" to="(1790,710)"/>
-    <wire from="(1790,520)" to="(2020,520)"/>
+    <wire from="(1790,520)" to="(1870,520)"/>
     <wire from="(1790,700)" to="(1790,710)"/>
     <wire from="(1790,700)" to="(1870,700)"/>
     <wire from="(1790,710)" to="(1790,730)"/>
@@ -614,12 +636,39 @@ end type_architecture;
     <wire from="(1860,1010)" to="(1880,1010)"/>
     <wire from="(1860,720)" to="(1860,730)"/>
     <wire from="(1860,720)" to="(1870,720)"/>
+    <wire from="(1870,510)" to="(1870,520)"/>
+    <wire from="(1870,510)" to="(1940,510)"/>
+    <wire from="(1870,550)" to="(1870,580)"/>
+    <wire from="(1870,550)" to="(1880,550)"/>
+    <wire from="(1870,580)" to="(2000,580)"/>
     <wire from="(1880,730)" to="(1880,860)"/>
+    <wire from="(1890,890)" to="(1890,900)"/>
+    <wire from="(1890,900)" to="(1950,900)"/>
     <wire from="(1900,670)" to="(1930,670)"/>
     <wire from="(1900,710)" to="(1930,710)"/>
+    <wire from="(1920,550)" to="(1930,550)"/>
+    <wire from="(1920,850)" to="(1920,880)"/>
+    <wire from="(1920,850)" to="(2000,850)"/>
+    <wire from="(1920,880)" to="(1950,880)"/>
+    <wire from="(1930,530)" to="(1930,550)"/>
+    <wire from="(1930,530)" to="(1940,530)"/>
     <wire from="(1930,990)" to="(2020,990)"/>
+    <wire from="(1970,520)" to="(2020,520)"/>
     <wire from="(1980,690)" to="(2020,690)"/>
+    <wire from="(1980,890)" to="(2030,890)"/>
+    <wire from="(1990,780)" to="(2000,780)"/>
     <wire from="(200,200)" to="(230,200)"/>
+    <wire from="(2000,580)" to="(2000,780)"/>
+    <wire from="(2000,780)" to="(2000,850)"/>
+    <wire from="(2000,780)" to="(2020,780)"/>
+    <wire from="(2020,680)" to="(2020,690)"/>
+    <wire from="(2020,680)" to="(2050,680)"/>
+    <wire from="(2030,700)" to="(2030,720)"/>
+    <wire from="(2030,700)" to="(2050,700)"/>
+    <wire from="(2030,720)" to="(2080,720)"/>
+    <wire from="(2060,780)" to="(2080,780)"/>
+    <wire from="(2080,690)" to="(2100,690)"/>
+    <wire from="(2080,720)" to="(2080,780)"/>
     <wire from="(230,200)" to="(330,200)"/>
     <wire from="(250,130)" to="(560,130)"/>
     <wire from="(250,140)" to="(550,140)"/>
