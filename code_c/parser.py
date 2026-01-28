@@ -1,4 +1,5 @@
 import re
+import os
 
 Conditions = {
     "eq": "0000", "ne": "0001", "cs": "0010", "hs": "0010",
@@ -230,21 +231,47 @@ def open_file(file):
     return contenu
 
 def compare(file, str):
-    with open(file, 'r') as f:
-        file_content = f.read()
-    if file_content.split() == str.split():
-        return True
-    else:
+    try:
+        with open(file, 'r') as f:
+            content_bin = f.read()
+        if content_bin.split() == str.split():
+            return True
+        return False
+    except FileNotFoundError:
         return False
 
-file_asm = "./code_c/calckeyb.s"
-file_bin = "./code_c/calckeyb.bin"
+def process_all_files(root="."):
+    count_ok = 0
+    count_total = 0
 
-codes = assemble(open_file(file_asm))
-res = "v2.0 raw\n"
-res += " ".join(codes)
+    for dirpath, _, filenames in os.walk(root):
+        for filename in filenames:
+            if filename.endswith(".s"):
+                count_total += 1
 
-is_identical = compare(file_bin, res)
+                file_s_path = os.path.join(dirpath, filename)
+                file_bin_path = os.path.join(dirpath, filename.replace(".s", ".bin"))
+                print("---------------------------------")
+                print(f"Traitement : {file_s_path}")
 
-print(f"Code généré :\n{res}\n")
-print(f"Le résultat correspond-il à {file_bin} ? -> {is_identical}")
+                try:
+                    with open(file_s_path, 'r') as f:
+                        content_asm = f.read()
+
+                    codes = assemble(content_asm)
+                    res = "v2.0 raw\n" + " ".join(codes)
+
+                    if os.path.exists(file_bin_path):
+                        if compare(file_bin_path, res):
+                            print(f"succes pour {os.path.basename(file_bin_path)}")
+                            count_ok += 1
+                        else:
+                            print(f"Echec pour {os.path.basename(file_bin_path)}")
+                    else:
+                        print(f"pas de fichier bin pour {os.path.basename(file_bin_path)}")
+                except Exception as e:
+                    print("Error")
+
+    print(f"\n--- Bilan : {count_ok}/{count_total} fichiers corrects ---")
+
+process_all_files(".")
