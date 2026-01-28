@@ -1022,7 +1022,7 @@
     </comp>
     <comp lib="0" loc="(970,440)" name="Tunnel">
       <a name="facing" val="south"/>
-      <a name="label" val="A"/>
+      <a name="label" val="B"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(980,1060)" name="Constant">
