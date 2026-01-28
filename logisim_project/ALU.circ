@@ -1029,6 +1029,7 @@
     <comp lib="1" loc="(880,950)" name="Controlled Buffer">
       <a name="width" val="32"/>
     </comp>
+    <comp lib="1" loc="(970,970)" name="NOT Gate"/>
     <comp lib="2" loc="(1020,1030)" name="BitSelector">
       <a name="width" val="32"/>
     </comp>
@@ -1559,7 +1560,7 @@
     <wire from="(810,1410)" to="(1070,1410)"/>
     <wire from="(810,860)" to="(1090,860)"/>
     <wire from="(810,910)" to="(810,930)"/>
-    <wire from="(810,970)" to="(1080,970)"/>
+    <wire from="(810,970)" to="(940,970)"/>
     <wire from="(820,1590)" to="(820,1600)"/>
     <wire from="(830,1040)" to="(860,1040)"/>
     <wire from="(830,1140)" to="(860,1140)"/>
@@ -1629,6 +1630,7 @@
     <wire from="(960,770)" to="(1040,770)"/>
     <wire from="(960,770)" to="(960,790)"/>
     <wire from="(970,440)" to="(1000,440)"/>
+    <wire from="(970,970)" to="(1080,970)"/>
     <wire from="(980,1060)" to="(1010,1060)"/>
     <wire from="(980,660)" to="(1020,660)"/>
     <wire from="(980,660)" to="(980,680)"/>
