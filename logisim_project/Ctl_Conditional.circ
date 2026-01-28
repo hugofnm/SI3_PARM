@@ -33,7 +33,7 @@
       <a name="width" val="2"/>
     </tool>
     <tool name="Ground">
-      <a name="facing" val="west"/>
+      <a name="facing" val="north"/>
       <a name="width" val="24"/>
     </tool>
     <tool name="Transistor">
@@ -210,11 +210,11 @@ end type_architecture;
       <a name="appear" val="right"/>
       <a name="bit1" val="0"/>
       <a name="bit10" val="0"/>
-      <a name="bit11" val="1"/>
-      <a name="bit12" val="1"/>
+      <a name="bit11" val="none"/>
+      <a name="bit12" val="none"/>
       <a name="bit13" val="1"/>
-      <a name="bit14" val="1"/>
-      <a name="bit15" val="1"/>
+      <a name="bit14" val="none"/>
+      <a name="bit15" val="none"/>
       <a name="bit2" val="0"/>
       <a name="bit3" val="0"/>
       <a name="bit4" val="0"/>
@@ -224,6 +224,9 @@ end type_architecture;
       <a name="bit8" val="0"/>
       <a name="bit9" val="0"/>
       <a name="incoming" val="16"/>
+    </comp>
+    <comp lib="0" loc="(390,190)" name="Bit Extender">
+      <a name="out_width" val="11"/>
     </comp>
     <comp lib="0" loc="(570,60)" name="Pin">
       <a name="appearance" val="classic"/>
@@ -247,8 +250,14 @@ end type_architecture;
       <a name="label" val="Verified"/>
       <a name="type" val="output"/>
     </comp>
+    <comp lib="1" loc="(600,350)" name="OR Gate">
+      <a name="size" val="30"/>
+    </comp>
     <comp lib="1" loc="(660,340)" name="AND Gate">
       <a name="size" val="30"/>
+    </comp>
+    <comp lib="2" loc="(470,200)" name="Multiplexer">
+      <a name="width" val="11"/>
     </comp>
     <comp lib="2" loc="(660,210)" name="Multiplexer">
       <a name="width" val="11"/>
@@ -259,6 +268,8 @@ end type_architecture;
     <wire from="(210,390)" to="(320,390)"/>
     <wire from="(210,420)" to="(260,420)"/>
     <wire from="(210,450)" to="(280,450)"/>
+    <wire from="(230,190)" to="(230,220)"/>
+    <wire from="(230,190)" to="(350,190)"/>
     <wire from="(230,230)" to="(230,330)"/>
     <wire from="(230,330)" to="(280,330)"/>
     <wire from="(250,140)" to="(250,210)"/>
@@ -271,18 +282,32 @@ end type_architecture;
     <wire from="(280,350)" to="(320,350)"/>
     <wire from="(280,430)" to="(280,450)"/>
     <wire from="(280,430)" to="(320,430)"/>
-    <wire from="(310,150)" to="(550,150)"/>
-    <wire from="(540,350)" to="(630,350)"/>
-    <wire from="(550,150)" to="(550,220)"/>
+    <wire from="(310,150)" to="(430,150)"/>
+    <wire from="(310,160)" to="(410,160)"/>
+    <wire from="(390,190)" to="(440,190)"/>
+    <wire from="(410,160)" to="(410,230)"/>
+    <wire from="(410,230)" to="(450,230)"/>
+    <wire from="(430,150)" to="(430,210)"/>
+    <wire from="(430,210)" to="(440,210)"/>
+    <wire from="(450,220)" to="(450,230)"/>
+    <wire from="(450,230)" to="(550,230)"/>
+    <wire from="(470,200)" to="(550,200)"/>
+    <wire from="(540,350)" to="(540,360)"/>
+    <wire from="(540,360)" to="(570,360)"/>
+    <wire from="(550,200)" to="(550,220)"/>
     <wire from="(550,220)" to="(630,220)"/>
-    <wire from="(570,250)" to="(570,330)"/>
-    <wire from="(570,250)" to="(640,250)"/>
+    <wire from="(550,230)" to="(550,340)"/>
+    <wire from="(550,340)" to="(570,340)"/>
     <wire from="(570,330)" to="(630,330)"/>
-    <wire from="(570,60)" to="(570,250)"/>
+    <wire from="(570,60)" to="(570,330)"/>
+    <wire from="(600,350)" to="(630,350)"/>
     <wire from="(610,200)" to="(630,200)"/>
     <wire from="(640,230)" to="(640,250)"/>
+    <wire from="(640,250)" to="(670,250)"/>
     <wire from="(660,210)" to="(690,210)"/>
-    <wire from="(660,340)" to="(690,340)"/>
+    <wire from="(660,340)" to="(670,340)"/>
+    <wire from="(670,250)" to="(670,340)"/>
+    <wire from="(670,340)" to="(690,340)"/>
   </circuit>
   <circuit name="Verify">
     <a name="appearance" val="logisim_evolution"/>

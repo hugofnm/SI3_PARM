@@ -168,7 +168,7 @@ end type_architecture;
       <circ-port dir="out" pin="2020,1170" x="270" y="160"/>
       <circ-port dir="out" pin="2020,1280" x="270" y="40"/>
       <circ-port dir="out" pin="2020,530" x="270" y="180"/>
-      <circ-port dir="out" pin="2020,590" x="270" y="80"/>
+      <circ-port dir="out" pin="2020,600" x="270" y="80"/>
       <circ-port dir="out" pin="2020,980" x="270" y="140"/>
       <circ-port dir="out" pin="2030,880" x="270" y="60"/>
       <circ-port dir="out" pin="2100,700" x="270" y="100"/>
@@ -323,6 +323,10 @@ end type_architecture;
       <a name="in_width" val="1"/>
       <a name="out_width" val="3"/>
     </comp>
+    <comp lib="0" loc="(1840,620)" name="Bit Extender">
+      <a name="in_width" val="1"/>
+      <a name="out_width" val="5"/>
+    </comp>
     <comp lib="0" loc="(1960,780)" name="Bit Extender">
       <a name="in_width" val="1"/>
       <a name="out_width" val="32"/>
@@ -352,7 +356,7 @@ end type_architecture;
       <a name="type" val="output"/>
       <a name="width" val="3"/>
     </comp>
-    <comp lib="0" loc="(2020,590)" name="Pin">
+    <comp lib="0" loc="(2020,600)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="Imm5"/>
@@ -486,6 +490,10 @@ end type_architecture;
       <a name="size" val="30"/>
       <a name="width" val="3"/>
     </comp>
+    <comp lib="1" loc="(1970,600)" name="AND Gate">
+      <a name="size" val="30"/>
+      <a name="width" val="5"/>
+    </comp>
     <comp lib="1" loc="(1980,690)" name="OR Gate">
       <a name="width" val="32"/>
     </comp>
@@ -516,7 +524,7 @@ end type_architecture;
     <comp lib="3" loc="(1790,730)" name="Negator">
       <a name="width" val="32"/>
     </comp>
-    <comp lib="8" loc="(2109,910)" name="Text">
+    <comp lib="8" loc="(2105,910)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="only ADD and SUB use Rm"/>
     </comp>
@@ -589,7 +597,7 @@ end type_architecture;
     <wire from="(1280,890)" to="(1950,890)"/>
     <wire from="(1300,530)" to="(1520,530)"/>
     <wire from="(1300,560)" to="(1470,560)"/>
-    <wire from="(1300,590)" to="(2020,590)"/>
+    <wire from="(1300,590)" to="(1940,590)"/>
     <wire from="(1310,620)" to="(1340,620)"/>
     <wire from="(1310,650)" to="(1550,650)"/>
     <wire from="(1310,740)" to="(1340,740)"/>
@@ -635,6 +643,8 @@ end type_architecture;
     <wire from="(1690,1060)" to="(1690,1160)"/>
     <wire from="(1690,1160)" to="(1730,1160)"/>
     <wire from="(1710,1110)" to="(1800,1110)"/>
+    <wire from="(1710,620)" to="(1710,780)"/>
+    <wire from="(1710,620)" to="(1800,620)"/>
     <wire from="(1710,780)" to="(1710,870)"/>
     <wire from="(1710,780)" to="(1920,780)"/>
     <wire from="(1710,870)" to="(1710,1110)"/>
@@ -653,7 +663,10 @@ end type_architecture;
     <wire from="(1810,720)" to="(1820,720)"/>
     <wire from="(1830,730)" to="(1830,860)"/>
     <wire from="(1840,1110)" to="(1880,1110)"/>
+    <wire from="(1840,620)" to="(1860,620)"/>
     <wire from="(1850,710)" to="(1930,710)"/>
+    <wire from="(1860,610)" to="(1860,620)"/>
+    <wire from="(1860,610)" to="(1940,610)"/>
     <wire from="(1860,990)" to="(1910,990)"/>
     <wire from="(1880,1110)" to="(1880,1160)"/>
     <wire from="(1880,1160)" to="(1910,1160)"/>
@@ -665,6 +678,7 @@ end type_architecture;
     <wire from="(1940,980)" to="(2020,980)"/>
     <wire from="(1960,780)" to="(2000,780)"/>
     <wire from="(1970,530)" to="(2020,530)"/>
+    <wire from="(1970,600)" to="(2020,600)"/>
     <wire from="(1980,690)" to="(2050,690)"/>
     <wire from="(1980,880)" to="(2030,880)"/>
     <wire from="(200,200)" to="(230,200)"/>
